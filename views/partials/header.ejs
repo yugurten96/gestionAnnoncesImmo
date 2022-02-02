@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Make site responsive on mobile/tablet -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SITE DES ANNONCES</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Asap|Lexend+Giga&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/"><i class="fas fa-home"></i> SITE DES ANNONCES</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="<%= typeof page !== 'undefined' && page === 'annonces' ? 'active' : '' %>"><a
+                                href="/annonces">Annonces</a></li>
+                    <% if((typeof (currentUser) !="undefined")) {%>
+                        <% if((currentUser.role ==="admin")) {%>
+                            <li class="<%= typeof page !== 'undefined' && page === 'users' ? 'active' : '' %>"><a
+                                        href="/users">Utilisateurs</a></li>
+
+
+                        <% } %>
+                    <% } %>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <% if(!currentUser){ %>
+                    <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a
+                            href="/login">Connexion</a></li>
+                    <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a
+                            href="/register">Enregistrement</a></li>
+
+                    <% } else { %>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a href="#" class="btn btn-info btn-lg">
+                                        <span class="glyphicon glyphicon-user"> <%= currentUser.username %></span>
+                                    </a>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a href="/users/profile/<%= currentUser.id%>" class="glyphicon glyphicon-user" > Profil </a></li>
+                                    <li><a href="/logout" class="glyphicon">&#xe017; Déconnexion</a></li>
+
+                                </div>
+                            </div>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <% if(error && error.length > 0) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= error %>
+        </div>
+        <% } %>
+        <% if(success && success.length > 0) { %>
+        <div class="alert alert-success" role="alert">
+            <%= success %>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="container">
+    </div>

@@ -1,0 +1,162 @@
+<% include ../partials/header %>
+
+<div class="container p-3 my-3 border">
+    <h1>
+    <img style="" src="<%= user.avatar %>" class="img-circle" alt="Cinque Terre" width="250" height="236">
+        <%= user.username%>
+        <div class="btn" ><a type="button" class="btn btn-primary btn-lg" href="/users/<%= user._id %>/edit"> Modifier les informations du profile</a> </div>
+    </h1>
+
+
+</div>
+
+<div class="container p-3 my-3 border">
+<h3>Liste de vos annonces </h3>
+</div>
+
+<div class="container p-3 my-3 bg-primary text-white">
+
+
+    <div class="row text-center" style="display:flex; flex-wrap: wrap">
+
+        <% annonces.forEach(annonce => { %>
+            <% if ((annonce.publication === "Publiée")) { %>
+
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="thumbnail">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                          <!-- Indicators -->
+                          <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                           </ol>
+
+                            <!-- Wrapper for slides -->
+                             <div class="carousel-inner" role="listbox">
+                              <div class="item active fixed-height">
+                                <img src="<%= annonce.image[0] %>" alt="image 1">
+                                <div class="carousel-caption">
+                                </div>
+                              </div>
+                              <div class="item fixed-height">
+                                <img src="<%= annonce.image[1] %>" alt="image 2">
+                                <div class="carousel-caption">
+                                </div>
+                              </div>
+                              <div class="item fixed-height">
+                                  <img src="<%= annonce.image[2] %>" alt="image 3">
+                                  <div class="carousel-caption">
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Controls -->
+                          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                        <div class="caption">
+                            <h4>
+                                <%= annonce.name %>
+                            </h4>
+                            <!-- Annonce Like Rating -->
+                            <div>
+                    <span class="badge label-primary"><i class="fas fa-thumbs-up"></i>
+                        <%= annonce.likes.length %></span>
+                            </div>
+                            <!-- Annonce Star Rating -->
+                            <% if (annonce.rating === 0) { %>
+                                <p></p>
+                                <h4>Pas d'évaluations encore.</h4>
+                            <% } else { %>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star <% if (annonce.rating > 1.5) { %> checked <% } %>"></span>
+                                <span class="fa fa-star <% if (annonce.rating > 2.5) { %> checked <% } %>"></span>
+                                <span class="fa fa-star <% if (annonce.rating > 3.5) { %> checked <% } %>"></span>
+                                <span class="fa fa-star <% if (annonce.rating > 4.5) { %> checked <% } %>"></span>
+                            <% } %>
+
+                            <h4><h4 style="color: midnightblue; font-family: bold">Le type de bien: </h4><%= annonce.type%></h4>
+                            <p> </p>
+                            <h4><h4 style="color: midnightblue; font-family: bold">Le statut du bien: </h4><%= annonce.status%></h4>
+
+                        </div>
+
+                        <p>
+                            <a href="/annonces/<%= annonce._id %>" class="btn btn-primary">Plus d'infos</a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+            <% } %>
+        <% }); %>
+
+        <% if((typeof (currentUser) !="undefined")) {%>
+            <% if((currentUser.role ==="admin") || (currentUser.role ==="agent" )) {%>
+
+                <% annonces.forEach(annonce => { %>
+                    <% if ((annonce.publication === "Non Publiée")) { %>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="thumbnail">
+                                <img src="<%= annonce.image %>">
+                                <div class="caption">
+                                    <h4>
+                                        <%= annonce.name %>
+                                    </h4>
+                                    <!-- Annonce Like Rating -->
+                                    <div>
+                    <span class="badge label-primary"><i class="fas fa-thumbs-up"></i>
+                        <%= annonce.likes.length %></span>
+                                    </div>
+                                    <!-- Annonce Star Rating -->
+                                    <% if (annonce.rating === 0) { %>
+                                        <p></p>
+                                        <h4>Pas d'évaluations encore.</h4>
+                                    <% } else { %>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star <% if (annonce.rating > 1.5) { %> checked <% } %>"></span>
+                                        <span class="fa fa-star <% if (annonce.rating > 2.5) { %> checked <% } %>"></span>
+                                        <span class="fa fa-star <% if (annonce.rating > 3.5) { %> checked <% } %>"></span>
+                                        <span class="fa fa-star <% if (annonce.rating > 4.5) { %> checked <% } %>"></span>
+                                    <% } %>
+                                    <h4><h4 style="color: #e36c56; font-family: bold">La publication de l'annonce: </h4><%= annonce.publication%></h4>
+                                    <h4><h4 style="color: #54cf27; font-family: bold">Le nombre de messages reçus: </h4><%= annonce.messages.length%></h4>
+                                    <h4><h4 style="color: midnightblue; font-family: bold">Le type du bien: </h4><%= annonce.type%></h4>
+                                    <h4><h4 style="color: midnightblue; font-family: bold">Le statut du bien: </h4><%= annonce.status%></h4>
+
+                                </div>
+
+                                <p>
+                                    <a href="/annonces/<%= annonce._id %>" class="btn btn-primary">Historique de l'annonce</a>
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    <% } %>
+
+                <% }); %>
+
+            <% } %>
+        <% } %>
+
+
+    </div>
+
+</div>
+
+
+<% include ../partials/footer %>
